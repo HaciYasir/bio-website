@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>yasir bio</title>
+
+<!-- Font Awesome for social icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  * { overflow: hidden !important; }
+/* ═══════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #d4a026;
+  --gold-light: #f0d060;
+  --gold-dark: #a07818;
+  --gold-glow: rgba(212, 160, 38, 0.6);
+  --bg-dark: #0a0a0f;
+  --card-bg: rgba(15, 15, 25, 0.55);
+  --card-border: rgba(212, 160, 38, 0.3);
+  --text-primary: #e8e0d0;
+  --text-secondary: #a09880;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg-dark);
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-primary);
+  cursor: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   LOADING SCREEN
+   ═══════════════════════════════════════════════════ */
+#loader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg-dark);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.8s, visibility 0.8s;
+}
+#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+#loader .spinner {
+  width: 60px; height: 60px;
+  border: 3px solid rgba(212,160,38,0.15);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+#loader p {
+  margin-top: 18px; font-family: 'Orbitron', sans-serif;
+  font-size: 13px; letter-spacing: 4px; color: var(--gold);
+  text-transform: uppercase;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════════════════
+   CUSTOM CURSOR
+   ═══════════════════════════════════════════════════ */
+#cursor-glow {
+  position: fixed; pointer-events: none; z-index: 10000;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,160,38,0.12) 0%, rgba(212,160,38,0.04) 35%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+  mix-blend-mode: screen;
+}
+#cursor-dot {
+  position: fixed; pointer-events: none; z-index: 10001;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px var(--gold-glow), 0 0 30px rgba(212,160,38,0.3);
+  transform: translate(-50%, -50%);
+}
+
+/* ═══════════════════════════════════════════════════
+   VIDEO BACKGROUND
+   ═══════════════════════════════════════════════════ */
+#bg-video {
+  position: fixed; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+  filter: brightness(0.5) saturate(0.7);
+}
+#bg-fallback {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0a0a1a 0%, #101020 50%, #0a0a15 100%);
+}
+
+/* ═══════════════════════════════════════════════════
+   PARTICLE CANVAS
+   ═══════════════════════════════════════════════════ */
+#particles-canvas {
+  position: fixed; inset: 0; z-index: 1;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   AUDIO VISUALIZER (LEFT & RIGHT)
+   ═══════════════════════════════════════════════════ */
+/* Ana kapsayıcı kutu */
+.audio-viz {
+  position: fixed; 
+  bottom: 0; 
+  left: 0;          
+  right: 0;         
+  z-index: 2;
+  width: 100vw; /* Ekranın tamamı */
+  height: 140px;    
+  pointer-events: none;
+  opacity: 0.7;
+  display: flex; /* İçindeki canvas'ları yan yana dizer */
+}
+
+/* 🚀 EKLENEN KISIM: Sol ve sağ canvas'lar ekranı %50-%50 eşit paylaşsın */
+.audio-viz canvas {
+  flex: 1; 
+  width: 50% !important;
+  height: 100% !important;
+}
+
+/* Medya sorgusunu da tamamen temizle veya şu şekilde güncelle */
+@media (max-width: 480px) {
+  .main-card { width: 92vw; padding: 28px 20px 22px; }
+  .username { font-size: 18px; }
+  /* Telefonlarda da tam ekran kalması için kısıtlamayı sildik */
+  .audio-viz { width: 100vw; height: 80px; } 
+}
+
+
+
+/* ═══════════════════════════════════════════════════
+   MAIN LAYOUT
+   ═══════════════════════════════════════════════════ */
+#app {
+  position: relative; z-index: 5;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ═══════════════════════════════════════════════════
+   3D GLASSMORPHIC CARD
+   ═══════════════════════════════════════════════════ */
+.card-wrapper {
+  perspective: 1200px;
+}
+.main-card {
+  position: relative;
+  width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 36px 32px 28px;
+  border-radius: 24px;
+  background: var(--card-bg);
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border: 1px solid var(--card-border);
+  box-shadow:
+    0 0 40px rgba(212,160,38,0.08),
+    0 0 80px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out, box-shadow 0.3s;
+  will-change: transform;
+}
+.main-card::-webkit-scrollbar { width: 4px; }
+.main-card::-webkit-scrollbar-track { background: transparent; }
+.main-card::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+/* Gold edge glow animation */
+.main-card::before {
+  content: '';
+  position: absolute; inset: -2px;
+  border-radius: 26px;
+  background: conic-gradient(from var(--glow-angle, 0deg),
+    transparent 0%, var(--gold) 10%, transparent 20%,
+    transparent 50%, var(--gold-dark) 60%, transparent 70%);
+  z-index: -1;
+  opacity: 0.5;
+  animation: rotateGlow 6s linear infinite;
+  filter: blur(3px);
+}
+@property --glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes rotateGlow {
+  to { --glow-angle: 360deg; }
+}
+
+/* Fallback glow for browsers without @property */
+@supports not (background: conic-gradient(from 0deg, red, blue)) {
+  .main-card::before {
+    background: linear-gradient(45deg, var(--gold), transparent, var(--gold-dark), transparent);
+    animation: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   PROFILE SECTION
+   ═══════════════════════════════════════════════════ */
+.profile-section {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 18px;
+}
+
+.avatar-container {
+  position: relative; width: 110px; height: 110px; margin-bottom: 16px;
+}
+.avatar-halo {
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold), var(--gold-light), var(--gold-dark), var(--gold));
+  animation: spin 4s linear infinite;
+  filter: blur(1px);
+}
+.avatar-halo-inner {
+  position: absolute; inset: 2px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+}
+.avatar-img {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bg-dark);
+}
+
+/* Discord status dot */
+.status-dot {
+  position: absolute; bottom: 4px; right: 4px; z-index: 2;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 3px solid var(--bg-dark);
+  background: #747f8d; /* offline grey default */
+  transition: background 0.4s;
+}
+.status-dot.online { background: #43b581; box-shadow: 0 0 8px rgba(67,181,129,0.6); }
+.status-dot.idle { background: #faa61a; box-shadow: 0 0 8px rgba(250,166,26,0.6); }
+.status-dot.dnd { background: #f04747; box-shadow: 0 0 8px rgba(240,71,71,0.6); }
+.status-dot.offline { background: #747f8d; }
+
+.username {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px; font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  text-shadow: 0 0 20px rgba(212,160,38,0.3);
+  margin-bottom: 4px;
+}
+.bio {
+  font-size: 14px; color: var(--text-secondary);
+  text-align: center; max-width: 320px;
+  line-height: 1.5; margin-bottom: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Developer Badge */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 16px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(212,160,38,0.15), rgba(212,160,38,0.05));
+  border: 1px solid rgba(212,160,38,0.35);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.badge i { font-size: 11px; }
+
+/* ═══════════════════════════════════════════════════
+   TECH TAGS
+   ═══════════════════════════════════════════════════ */
+.tech-tags {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 8px; margin-bottom: 22px;
+}
+.tech-tag {
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: rgba(212,160,38,0.08);
+  border: 1px solid rgba(212,160,38,0.2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  color: var(--gold-light);
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+.tech-tag:hover {
+  background: rgba(212,160,38,0.2);
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(212,160,38,0.2);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════
+   LANYARD - PLAYING NOW CARD
+   ═══════════════════════════════════════════════════ */
+.presence-card {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(212,160,38,0.12);
+  margin-bottom: 20px;
+  transition: all 0.4s;
+  min-height: 60px;
+}
+.presence-card:hover {
+  border-color: rgba(212,160,38,0.3);
+  box-shadow: 0 0 20px rgba(212,160,38,0.06);
+}
+.presence-header {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px; letter-spacing: 3px;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.presence-header .pulse-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.presence-body {
+  display: flex; align-items: center; gap: 12px;
+}
+.presence-icon {
+  width: 48px; height: 48px; border-radius: 10px;
+  background: rgba(212,160,38,0.1);
+  border: 1px solid rgba(212,160,38,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--gold);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.presence-icon img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 10px;
+}
+.presence-info { flex: 1; min-width: 0; }
+.presence-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px; font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.presence-detail {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--text-secondary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.presence-empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--text-secondary);
+  text-align: center; padding: 8px 0;
+  opacity: 0.6;
+}
+
+/* Spotify specific */
+.spotify-progress {
+  margin-top: 6px; width: 100%; height: 3px;
+  background: rgba(212,160,38,0.15); border-radius: 2px;
+  overflow: hidden;
+}
+.spotify-progress-bar {
+  height: 100%; background: var(--gold);
+  border-radius: 2px; transition: width 1s linear;
+}
+
+/* ═══════════════════════════════════════════════════
+   SOCIAL LINKS
+   ═══════════════════════════════════════════════════ */
+.social-links {
+  display: flex; justify-content: center;
+  gap: 12px; margin-bottom: 20px;
+}
+.social-btn {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: rgba(212,160,38,0.06);
+  border: 1px solid rgba(212,160,38,0.15);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  font-size: 18px;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: none;
+}
+.social-btn:hover {
+  color: var(--gold);
+  background: rgba(212,160,38,0.15);
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,160,38,0.25), 0 4px 15px rgba(0,0,0,0.3);
+  transform: translateY(-4px);
+}
+
+/* ═══════════════════════════════════════════════════
+   MUSIC PLAYER CONTROLS
+   ═══════════════════════════════════════════════════ */
+.player-bar {
+  display: flex; align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(212,160,38,0.1);
+}
+.play-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  color: #0a0a0f;
+  font-size: 14px;
+  cursor: none;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.play-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px var(--gold-glow);
+}
+.volume-container {
+  display: flex; align-items: center; gap: 8px; flex: 1;
+}
+.volume-container i {
+  color: var(--gold-dark); font-size: 14px; flex-shrink: 0;
+}
+.volume-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(212,160,38,0.2);
+  outline: none;
+  cursor: none;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: none;
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+.volume-slider::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: none;
+  cursor: none;
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
+/* Visitor Counter */
+.visitor-counter {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: rgba(212,160,38,0.06);
+  border: 1px solid rgba(212,160,38,0.12);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--gold-dark);
+  flex-shrink: 0;
+}
+.visitor-counter .live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #43b581;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════
+   SCAN LINE OVERLAY (cyberpunk vibe)
+   ═══════════════════════════════════════════════════ */
+#scanlines {
+  position: fixed; inset: 0; z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+.delay-1 { animation-delay: 0.1s; opacity: 0; }
+.delay-2 { animation-delay: 0.2s; opacity: 0; }
+.delay-3 { animation-delay: 0.3s; opacity: 0; }
+.delay-4 { animation-delay: 0.4s; opacity: 0; }
+.delay-5 { animation-delay: 0.5s; opacity: 0; }
+.delay-6 { animation-delay: 0.6s; opacity: 0; }
+.delay-7 { animation-delay: 0.7s; opacity: 0; }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .main-card { width: 92vw; padding: 28px 20px 22px; }
+  
+  /* 🚀 BURAYI DEĞİŞTİRDİK: width: 100px yerine 100% yaptık */
+  .audio-viz { width: 100%; height: 80px; } 
+  
+  .username { font-size: 18px; }
+}
+/* SES KONTROL ALANINI BÜYÜTME */
+.audio-controls {
+  gap: 15px !important;
+  padding: 10px !important;
+}
+
+/* Play/Pause Butonu ve İkonu */
+#play-btn {
+  width: 45px !important;
+  height: 45px !important;
+  font-size: 1.3rem !important;
+  cursor: pointer;
+}
+
+/* Ses Kaydırma Çubuğu (Volume Slider) */
+#volume-slider {
+  width: 120px !important;
+  height: 8px !important;
+  cursor: pointer;
+}
+
+/* Hoparlör İkonu */
+.volume-container i {
+  font-size: 1.2rem !important;
+}
+/* ARKA PLAN VİDEOSUNU ÖNE ÇIKARMA */
+#bg-video, video {
+  opacity: 0.85 !important; /* Videonun görünürlüğünü artırdık */
+  filter: brightness(0.9) !important; /* Karartmayı azalttık */
+}
+
+/* Eğer videonun önünde siyah overlay (karartma katmanı) varsa onu şeffaflaştırma */
+.overlay, .video-overlay {
+  background: rgba(0, 0, 0, 0.35) !important; /* Siyahlığı düşürdük */
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══ LOADING SCREEN ═══ -->
+<!-- ═══ LOADING SCREEN ═══ -->
+<!-- ═══ LOADING SCREEN ═══ -->
+<div id="loader">
+  <p style="cursor: pointer; font-weight: bold; letter-spacing: 2px;">[ CLICK TO ENTER ]</p>
+</div>
+
+<!-- ═══ CUSTOM CURSOR ═══ -->
+<div id="cursor-glow"></div>
+<div id="cursor-dot"></div>
+
+<!-- ═══ BACKGROUND VIDEO ═══ -->
+<div id="bg-fallback"></div>
+<video id="bg-video" autoplay loop muted playsinline>
+  <!-- 🎬 Kendi video dosyanızın yolunu buraya girin -->
+  <source src="bg.mp4" type="video/mp4">
+</video>
+
+<!-- ═══ SCANLINES OVERLAY ═══ -->
+<div id="scanlines"></div>
+
+<!-- ═══ PARTICLE CANVAS ═══ -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- ═══ AUDIO VISUALIZERS ═══ -->
+<canvas class="audio-viz left" id="viz-left"></canvas>
+<canvas class="audio-viz right" id="viz-right"></canvas>
+
+<!-- ═══ BACKGROUND MUSIC ═══ -->
+<!-- 🎵 Kendi müzik dosyanızın yolunu buraya girin -->
+<audio id="bg-music" loop preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app">
+  <div class="card-wrapper">
+    <div class="main-card" id="main-card">
+
+      <!-- Profile -->
+      <div class="profile-section fade-in-up delay-1">
+        <div class="avatar-container">
+          <div class="avatar-halo"></div>
+          <div class="avatar-halo-inner"></div>
+          <!-- 📸 Kendi profil resminizin yolunu girin -->
+          <img src="pp.png" alt="Profil Resmi" class="avatar-img">
+               onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23191920%22 width=%22100%22 height=%22100%22/><text x=%2250%25%22 y=%2254%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23d4a026%22 font-size=%2238%22 font-family=%22monospace%22>C</text></svg>'">
+          <div class="status-dot" id="discord-status" title="Discord Status"></div>
+        </div>
+
+        <div class="username">Yasir Bakır</div>
+        <div class="bio">???<br>Yazılım konusunda kendimi geliştiriyorum.</div>
+        <div class="badge"><i class="fas fa-code"></i> GELİŞTİRİCİ</div>
+      </div>
+
+      <!-- Tech Tags -->
+      <div class="tech-tags fade-in-up delay-2">
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">PYTHON</span>
+      </div>
+
+      <!-- Lanyard - Rich Presence -->
+      <div class="presence-card fade-in-up delay-3" id="presence-card">
+        <div class="presence-header">
+          <div class="pulse-dot"></div>
+          <span>OYNUYOR</span>
+        </div>
+        <div id="presence-content">
+          <div class="presence-empty">Connecting to Discord...</div>
+        </div>
+      </div>
+
+      <!-- Social Links -->
+      <div class="social-links fade-in-up delay-5">
+        <a href="https://github.com/HaciYasir" target="_blank" class="social-btn" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="discord://-/users/992152470576955392" target="_blank" class="social-btn" title="Discord">
+          <i class="fab fa-discord"></i>
+        </a>
+      </div>
+
+      <!-- Music Player -->
+        <div class="volume-container">
+          <i class="fas fa-volume-up" id="vol-icon"></i>
+          <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="40">
+        </div>
+        <div class="visitor-counter">
+          <div class="live-dot"></div>
+          <span id="visitor-count">0</span>
+        </div>
+      </div>
+
+    </div><!-- /main-card -->
+  </div><!-- /card-wrapper -->
+</div><!-- /app -->
+
+
+<script>
+/* ═════════════════════════════════════════════════════════════
+   1. CONFIG & DISCORD LANYARD API
+   ═════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  DISCORD_ID: '992152470576955392', // Discord ID'ni buraya yaz kankam
+};
+
+/* ═════════════════════════════════════════════════════════════
+   DISCORD LANYARD CANLI DURUM
+   ═════════════════════════════════════════════════════════════ */
+function initLanyard() {
+  if (!CONFIG.DISCORD_ID || CONFIG.DISCORD_ID === '992152470576955392') return;
+  
+  const ws = new WebSocket('wss://api.lanyard.rest/socket');
+  
+  ws.onopen = () => {
+    ws.send(JSON.stringify({
+      op: 2,
+      d: { subscribe_to_id: CONFIG.DISCORD_ID }
+    }));
+  };
+
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') {
+      const d = data.d;
+      const statusDot = document.getElementById('status-dot');
+      const activityEl = document.getElementById('discord-activity');
+      
+      // Profil Durum Rengi (Yeşil, Kırmızı, Sarı, Gri)
+      if (statusDot) {
+        statusDot.className = `status-dot ${d.discord_status}`;
+      }
+
+      if (activityEl) {
+        // 1. Oyun Oynuyorsa (Öncelikli)
+        const game = d.activities && d.activities.find(a => a.type === 0);
+        if (game) {
+          activityEl.innerHTML = `🎮 Oynuyor <b>${game.name}</b> ${game.details ? '- ' + game.details : ''}`;
+        } 
+        // 2. Spotify Dinliyorsa
+        else if (d.listening_to_spotify) {
+          activityEl.innerHTML = `🎵 Dinliyor: <b>${d.spotify.song}</b> by ${d.spotify.artist}`;
+        } 
+        // 3. Hiçbiri Yoksa
+        else {
+          activityEl.innerHTML = `// Şu an bir şey oynamıyor`;
+        }
+      }
+    }
+  };
+}
+initLanyard();
+
+/* ═════════════════════════════════════════════════════════════
+   2. MOUSE & 3D TILT EFEKTİ
+   ═════════════════════════════════════════════════════════════ */
+const cursorGlow = document.getElementById('cursor-glow');
+const cursorDot = document.getElementById('cursor-dot');
+const card = document.getElementById('main-card');
+
+document.addEventListener('mousemove', e => {
+  if (cursorDot) { cursorDot.style.left = e.clientX + 'px'; cursorDot.style.top = e.clientY + 'px'; }
+  if (cursorGlow) { cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px'; }
+
+  if (card) {
+    const rotateX = ((e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)) * -10;
+    const rotateY = ((e.clientX - window.innerWidth / 2) / (window.innerWidth / 2)) * 10;
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  }
+});
+
+/* ═════════════════════════════════════════════════════════════
+   3. GARANTİ SES & TAM EKRAN EKOLAYZER SİSTEMİ
+   ═════════════════════════════════════════════════════════════ */
+const audio = document.getElementById('bg-music');
+const loader = document.getElementById('loader');
+const playBtn = document.getElementById('play-btn');
+const playIcon = document.getElementById('play-icon');
+const volSlider = document.getElementById('volume-slider');
+
+let audioCtx, analyser, dataArray;
+let isPlaying = false;
+
+// Tıklayınca Açılış ve Sesi Başlatma
+if (loader) {
+  loader.style.cursor = 'pointer';
+  loader.addEventListener('click', () => {
+    if (audio) {
+      audio.play().then(() => {
+        isPlaying = true;
+        if (playIcon) playIcon.className = 'fas fa-pause';
+        startVisualizer();
+      }).catch(err => {
+        console.log("Ses hatası:", err);
+      });
+    }
+
+    loader.style.opacity = '0';
+    setTimeout(() => loader.style.display = 'none', 500);
+  });
+}
+
+// Oynat / Durdur Butonu
+if (playBtn && audio) {
+  playBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPlaying) {
+      audio.pause();
+      if (playIcon) playIcon.className = 'fas fa-play';
+    } else {
+      audio.play();
+      if (playIcon) playIcon.className = 'fas fa-pause';
+    }
+    isPlaying = !isPlaying;
+  });
+}
+
+// Ses Seviyesi (Volume Slider)
+if (volSlider && audio) {
+  volSlider.addEventListener('input', e => {
+    audio.volume = e.target.value / 100;
+  });
+}
+
+// Ekolayzer Motoru (Tam Genişlik Ayarlı)
+function startVisualizer() {
+  if (audioCtx) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 64;
+    const source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+    drawVisualizer();
+  } catch (e) {
+    console.log("Visualizer başlatılamadı:", e);
+  }
+}
+
+function drawVisualizer() {
+  requestAnimationFrame(drawVisualizer);
+  if (!analyser) return;
+  analyser.getByteFrequencyData(dataArray);
+
+  const vizLeft = document.getElementById('viz-left');
+  const vizRight = document.getElementById('viz-right');
+
+  [vizLeft, vizRight].forEach((canvas) => {
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    // Çözünürlüğü kutunun tam genişliğine eşitliyoruz (Tam Otursun Diye)
+    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const bars = 28;
+    const gap = 4;
+    
+    // 🚀 FORMÜL DÜZELTİLDİ: Toplam boşluk sayısı çubuk sayısından 1 eksiktir, böylece tam sığar
+    const barWidth = (canvas.width - ((bars - 1) * gap)) / bars;
+    
+    for (let i = 0; i < bars; i++) {
+      const barHeight = (dataArray[i] / 255) * canvas.height;
+      
+      const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
+      gradient.addColorStop(0, '#ffcc00');
+      gradient.addColorStop(1, '#d4a026');
+
+      ctx.fillStyle = gradient;
+      
+      // X pozisyonunu yeni barWidth değerine göre milimetrik hesaplıyoruz
+      const xPosition = i * (barWidth + gap);
+      ctx.fillRect(xPosition, canvas.height - barHeight, barWidth, Math.max(barHeight, 3));
+    }
+  });
+}
+
+
+/* ═════════════════════════════════════════════════════════════
+   ██  LANYARD API — Discord Rich Presence
+   ═════════════════════════════════════════════════════════════ */
+const statusDot = document.getElementById('discord-status');
+const presenceContent = document.getElementById('presence-content');
+let lanyardWs = null;
+let heartbeatInterval = null;
+
+function connectLanyard() {
+  if (lanyardWs) {
+    try { lanyardWs.close(); } catch(_){}
+  }
+
+  lanyardWs = new WebSocket('wss://api.lanyard.rest/socket');
+
+  lanyardWs.onopen = () => console.log('[Lanyard] Connected');
+
+  lanyardWs.onmessage = (event) => {
+    const msg = JSON.parse(event.data);
+
+    switch (msg.op) {
+      case 1: // Hello
+        heartbeatInterval = setInterval(() => {
+          lanyardWs.send(JSON.stringify({ op: 3 }));
+        }, msg.d.heartbeat_interval);
+        // Subscribe
+        lanyardWs.send(JSON.stringify({
+          op: 2,
+          d: { subscribe_to_id: CONFIG.DISCORD_ID }
+        }));
+        break;
+
+      case 0: // Event (INIT_STATE or PRESENCE_UPDATE)
+        if (msg.t === 'INIT_STATE' || msg.t === 'PRESENCE_UPDATE') {
+          updatePresence(msg.d);
+        }
+        break;
+    }
+  };
+
+  lanyardWs.onclose = () => {
+    clearInterval(heartbeatInterval);
+    console.log('[Lanyard] Disconnected, reconnecting in 5s...');
+    setTimeout(connectLanyard, 5000);
+  };
+
+  lanyardWs.onerror = (err) => {
+    console.error('[Lanyard] Error:', err);
+  };
+}
+
+function updatePresence(data) {
+  // Status dot
+  const status = data.discord_status || 'offline';
+  statusDot.className = 'status-dot ' + status;
+
+  // Build presence display
+  let html = '';
+
+  // Spotify
+  if (data.listening_to_spotify && data.spotify) {
+    const sp = data.spotify;
+    const albumArt = sp.album_art_url || '';
+    html = `
+      <div class="presence-body">
+        <div class="presence-icon">
+          ${albumArt ? `<img src="${albumArt}" alt="album">` : '<i class="fab fa-spotify"></i>'}
+        </div>
+        <div class="presence-info">
+          <div class="presence-title">${escapeHtml(sp.song)}</div>
+          <div class="presence-detail">by ${escapeHtml(sp.artist)}</div>
+          <div class="presence-detail" style="opacity:0.5">${escapeHtml(sp.album)}</div>
+        </div>
+      </div>
+      <div class="spotify-progress">
+        <div class="spotify-progress-bar" id="spotify-progress" style="width:0%"></div>
+      </div>`;
+
+    // Calculate progress
+    if (sp.timestamps) {
+      const now = Date.now();
+      const start = sp.timestamps.start;
+      const end = sp.timestamps.end;
+      const pct = Math.min(100, ((now - start) / (end - start)) * 100);
+      setTimeout(() => {
+        const bar = document.getElementById('spotify-progress');
+        if (bar) bar.style.width = pct + '%';
+      }, 50);
+    }
+  }
+  // Activities (games, VS Code, etc.)
+  else if (data.activities && data.activities.length > 0) {
+    // Find a non-custom-status activity
+    const activity = data.activities.find(a => a.type !== 4) || data.activities[0];
+    if (activity && activity.type !== 4) {
+      let icon = '<i class="fas fa-gamepad"></i>';
+      let assetUrl = '';
+
+      if (activity.assets && activity.assets.large_image) {
+        const img = activity.assets.large_image;
+        if (img.startsWith('mp:external/')) {
+          assetUrl = `https://media.discordapp.net/external/${img.slice(12)}`;
+        } else if (activity.application_id) {
+          assetUrl = `https://cdn.discordapp.com/app-assets/${activity.application_id}/${img}.png`;
+        }
+      }
+
+      if (assetUrl) {
+        icon = `<img src="${assetUrl}" alt="activity">`;
+      } else if (activity.name && activity.name.toLowerCase().includes('code')) {
+        icon = '<i class="fas fa-code"></i>';
+      }
+
+      html = `
+        <div class="presence-body">
+          <div class="presence-icon">${icon}</div>
+          <div class="presence-info">
+            <div class="presence-title">${escapeHtml(activity.name)}</div>
+            ${activity.details ? `<div class="presence-detail">${escapeHtml(activity.details)}</div>` : ''}
+            ${activity.state ? `<div class="presence-detail" style="opacity:0.5">${escapeHtml(activity.state)}</div>` : ''}
+          </div>
+        </div>`;
+    }
+  }
+
+  if (!html) {
+    html = '<div class="presence-empty">// Nothing playing right now</div>';
+  }
+
+  presenceContent.innerHTML = html;
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const d = document.createElement('div');
+  d.textContent = text;
+  return d.innerHTML;
+}
+
+// Start Lanyard connection
+connectLanyard();
+
+/* ═════════════════════════════════════════════════════════════
+   ██  VISITOR COUNTER (localStorage-based simulation)
+   ═════════════════════════════════════════════════════════════ */
+(function initVisitorCounter() {
+  let count = parseInt(localStorage.getItem('biolink_visitors') || '0');
+  const lastVisit = localStorage.getItem('biolink_last_visit');
+  const now = Date.now();
+
+  // Count new visit if more than 30 min since last
+  if (!lastVisit || now - parseInt(lastVisit) > 1800000) {
+    count++;
+    localStorage.setItem('biolink_visitors', count);
+    localStorage.setItem('biolink_last_visit', now);
+  }
+
+  // Animate counter
+  const el = document.getElementById('visitor-count');
+  let current = 0;
+  const step = Math.max(1, Math.floor(count / 30));
+  function countUp() {
+    current = Math.min(current + step, count);
+    el.textContent = current.toLocaleString();
+    if (current < count) requestAnimationFrame(countUp);
+  }
+  setTimeout(countUp, 1800);
+})();
+
+/* ═════════════════════════════════════════════════════════════
+   ██  CANVAS ROUNDRECT POLYFILL
+   ═════════════════════════════════════════════════════════════ */
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, radii) {
+    const r = Array.isArray(radii) ? radii : [radii, radii, radii, radii];
+    this.moveTo(x + r[0], y);
+    this.lineTo(x + w - r[1], y);
+    this.quadraticCurveTo(x + w, y, x + w, y + r[1]);
+    this.lineTo(x + w, y + h - r[2]);
+    this.quadraticCurveTo(x + w, y + h, x + w - r[2], y + h);
+    this.lineTo(x + r[3], y + h);
+    this.quadraticCurveTo(x, y + h, x, y + h - r[3]);
+    this.lineTo(x, y + r[0]);
+    this.quadraticCurveTo(x, y, x + r[0], y);
+    this.closePath();
+    return this;
+  };
+}
+
+/* ═════════════════════════════════════════════════════════════
+   ██  PAGE INTERACTIVITY — Click anywhere to start audio
+   ═════════════════════════════════════════════════════════════ */
+document.addEventListener('click', () => {
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}, { once: false });
+
+</script>
+</body>
+</html>
