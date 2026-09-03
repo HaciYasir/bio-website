@@ -1,726 +1,1194 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>yasir bio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yasir Bakır | Developer</title>
 
-<!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Step into the digital workspace of SYS_0xA7. Specialized in high-performance web development, creative coding, and system architecture. HTML, CSS, JS, React, Node.js, Python.">
+    <meta name="keywords" content="SYS_0xA7, Developer, Full Stack, Software Engineer, Creative Coder, Web Development, React, Node.js, Python, System">
+    <meta name="author" content="SYS_0xA7">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="LTkNzReoJWLdSrqRTnCJe_YgaahRcYL4PxkU_8mBQWU" />
+    <meta name="theme-color" content="#050505">
 
-<style>
-  * { overflow: hidden !important; }
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sys0xa7.is-a.dev/">
+    <meta property="og:title" content="Yasir Bakır">
+    <meta property="og:description" content="Full Stack Developer & Creative Coder. Accessing system data...">
+    <meta property="og:image" content="https://sys0xa7.is-a.dev/sys_logo.png?v=2">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:site_name" content="Yasir Bakır System">
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://sys0xa7.is-a.dev/">
+    <meta name="twitter:title" content="Yasir Bakır | Full Stack Developer">
+    <meta name="twitter:description" content="Innovative coding solutions and digital architecture.">
+    <meta name="twitter:image" content="https://sys0xa7.is-a.dev/sys_logo.png?v=2">
 
-:root {
-  --gold: #d4a026;
-  --gold-light: #f0d060;
-  --gold-dark: #a07818;
-  --gold-glow: rgba(212, 160, 38, 0.6);
-  --bg-dark: #0a0a0f;
-  --card-bg: rgba(15, 15, 25, 0.55);
-  --card-border: rgba(212, 160, 38, 0.3);
-  --text-primary: #e8e0d0;
-  --text-secondary: #a09880;
-}
+    <link rel="canonical" href="https://sys0xa7.is-a.dev/">
+    <link rel="icon" type="image/png" href="sys_logo.png?v=2">
 
-html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: var(--bg-dark);
-  font-family: 'Rajdhani', sans-serif;
-  color: var(--text-primary);
-  cursor: none;
-}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-/* LOADING SCREEN */
-#loader {
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--bg-dark);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  transition: opacity 0.8s, visibility 0.8s;
-  cursor: pointer;
-}
-#loader p {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 13px; letter-spacing: 4px; color: var(--gold);
-  text-transform: uppercase;
-}
+    <style>
+        /* --- loader --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505;
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+            cursor: none; /* hide system cursor */
+        }
 
-/* CUSTOM CURSOR */
-#cursor-glow {
-  position: fixed; pointer-events: none; z-index: 10000;
-  width: 320px; height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(212,160,38,0.12) 0%, rgba(212,160,38,0.04) 35%, transparent 70%);
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s;
-  mix-blend-mode: screen;
-}
-#cursor-dot {
-  position: fixed; pointer-events: none; z-index: 10001;
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 12px var(--gold-glow), 0 0 30px rgba(212,160,38,0.3);
-  transform: translate(-50%, -50%);
-}
+        .loader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
 
-/* VIDEO BACKGROUND */
-#bg-video {
-  position: fixed; inset: 0; z-index: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0.85 !important;
-  filter: brightness(0.9) !important;
-}
-#bg-fallback {
-  position: fixed; inset: 0; z-index: 0;
-  background: linear-gradient(135deg, #0a0a1a 0%, #101020 50%, #0a0a15 100%);
-}
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: #d4af37;
+            animation: spin 1s ease-in-out infinite;
+        }
 
-/* PARTICLE CANVAS (KAR YAĞIŞI & İMLEÇ TAKİBİ) */
-#particles-canvas {
-  position: fixed; inset: 0; z-index: 1;
-  pointer-events: none;
-}
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-/* AUDIO VISUALIZER (TAM EKRAN EN ALTTA) */
-#audio-viz {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 110px;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0.8;
-}
+        .click-text {
+             font-size: 1.5rem;
+             font-weight: 700;
+             letter-spacing: 2px;
+             color: #fff;
+             cursor: none !important; /* hide system cursor */
+             text-transform: uppercase;
+             text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+             transition: all 0.5s ease;
+        }
 
-/* MAIN LAYOUT */
-#app {
-  position: relative; z-index: 5;
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
+        .click-text:hover {
+             color: #f0e68c;
+             transform: scale(1.02);
+        }
+
+        /* --- core --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            cursor: none !important;
+        }
+        ::selection {
+    background-color: rgba(212, 175, 55, 0.4); 
+    color: #fff;
+    text-shadow: 0 0 5px rgba(212, 175, 55, 0.8);
 }
 
-/* 3D GLASSMORPHIC CARD */
-.card-wrapper { perspective: 1200px; }
-.main-card {
-  position: relative;
-  width: 420px;
-  max-height: 90vh;
-  overflow-y: auto; overflow-x: hidden;
-  padding: 36px 32px 28px;
-  border-radius: 24px;
-  background: var(--card-bg);
-  backdrop-filter: blur(24px) saturate(1.3);
-  -webkit-backdrop-filter: blur(24px) saturate(1.3);
-  border: 1px solid var(--card-border);
-  box-shadow:
-    0 0 40px rgba(212,160,38,0.08),
-    0 0 80px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-  transform-style: preserve-3d;
-  transition: transform 0.1s ease-out, box-shadow 0.3s;
-  will-change: transform;
-}
-.main-card::-webkit-scrollbar { width: 4px; }
-.main-card::-webkit-scrollbar-track { background: transparent; }
-.main-card::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
 
-.main-card::before {
-  content: '';
-  position: absolute; inset: -2px;
-  border-radius: 26px;
-  background: conic-gradient(from var(--glow-angle, 0deg),
-    transparent 0%, var(--gold) 10%, transparent 20%,
-    transparent 50%, var(--gold-dark) 60%, transparent 70%);
-  z-index: -1;
-  opacity: 0.5;
-  animation: rotateGlow 6s linear infinite;
-  filter: blur(3px);
-}
-@property --glow-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-@keyframes rotateGlow { to { --glow-angle: 360deg; } }
+        body {
+            background-color: #050505;
+            background-image: radial-gradient(#222 1px, transparent 1px);
+            background-size: 25px 25px;
+            color: #fff;
+            height: 100vh; /* Fixed height */
+            width: 100%;
+            overflow: hidden; /* Prevent scroll */
+            position: relative;
+            /* Flex and Perspective moved to .main-wrapper */
+        }
 
-/* PROFILE SECTION */
-.profile-section {
-  display: flex; flex-direction: column; align-items: center;
-  margin-bottom: 18px;
-}
-.avatar-container {
-  position: relative; width: 110px; height: 110px; margin-bottom: 16px;
-}
-.avatar-halo {
-  position: absolute; inset: -6px;
-  border-radius: 50%;
-  background: conic-gradient(var(--gold), var(--gold-light), var(--gold-dark), var(--gold));
-  animation: spin 4s linear infinite;
-  filter: blur(1px);
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.avatar-halo-inner {
-  position: absolute; inset: 2px;
-  border-radius: 50%;
-  background: var(--bg-dark);
-}
-.avatar-img {
-  position: relative; z-index: 1;
-  width: 100%; height: 100%;
-  border-radius: 50%; object-fit: cover;
-  border: 3px solid var(--bg-dark);
-}
-.status-dot {
-  position: absolute; bottom: 4px; right: 4px; z-index: 2;
-  width: 20px; height: 20px; border-radius: 50%;
-  border: 3px solid var(--bg-dark);
-  background: #747f8d; transition: background 0.4s;
-}
-.status-dot.online { background: #43b581; box-shadow: 0 0 8px rgba(67,181,129,0.6); }
-.status-dot.idle { background: #faa61a; box-shadow: 0 0 8px rgba(250,166,26,0.6); }
-.status-dot.dnd { background: #f04747; box-shadow: 0 0 8px rgba(240,71,71,0.6); }
-.status-dot.offline { background: #747f8d; }
+        .main-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+            position: relative;
+            z-index: 5; /* lower than cursor */
+        }
 
-.username {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 22px; font-weight: 700;
-  letter-spacing: 2px; color: var(--text-primary);
-  text-shadow: 0 0 20px rgba(212,160,38,0.3); margin-bottom: 4px;
-}
-.bio {
-  font-size: 14px; color: var(--text-secondary);
-  text-align: center; max-width: 320px; line-height: 1.5; margin-bottom: 12px;
-  font-family: 'JetBrains Mono', monospace;
-}
-.badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 16px; border-radius: 20px;
-  background: linear-gradient(135deg, rgba(212,160,38,0.15), rgba(212,160,38,0.05));
-  border: 1px solid rgba(212,160,38,0.35);
-  font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 600;
-  letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 18px;
+        /* --- custom cursor --- */
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #fff;
+            position: fixed;
+            border-radius: 50%;
+            z-index: 200001;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+        }
+
+        .cursor-outline {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: fixed;
+            border-radius: 50%;
+            z-index: 200000;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border 0.3s, background-color 0.3s;
+        }
+
+        .cursor-hover .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #d4af37;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border-color: rgba(212, 175, 55, 0.5);
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        #snow-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #audio-visualizer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25vh;
+            pointer-events: none;
+            z-index: 4;
+        }
+        /* Animasyonlu Bio Kutusu */
+.bio-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: #eee;
+    margin: 10px auto 15px auto;
+    width: max-content;
+    max-width: 90%;
+    backdrop-filter: blur(5px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateZ(30px);
 }
 
-/* TECH TAGS */
-.tech-tags {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 8px; margin-bottom: 22px;
-}
-.tech-tag {
-  padding: 4px 12px; border-radius: 6px;
-  background: rgba(212,160,38,0.08); border: 1px solid rgba(212,160,38,0.2);
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
-  color: var(--gold-light); letter-spacing: 1px; transition: all 0.3s;
-}
-.tech-tag:hover {
-  background: rgba(212,160,38,0.2); border-color: var(--gold);
-  box-shadow: 0 0 12px rgba(212,160,38,0.2); transform: translateY(-2px);
+.bio-box:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: #d4af37;
+    transform: translateY(-3px) scale(1.03) translateZ(45px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+    color: #fff;
 }
 
-/* LANYARD CARD */
-.presence-card {
-  width: 100%; padding: 14px; border-radius: 14px;
-  background: rgba(0,0,0,0.35); border: 1px solid rgba(212,160,38,0.12);
-  margin-bottom: 20px; transition: all 0.4s; min-height: 60px;
-}
-.presence-header {
-  font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 3px;
-  color: var(--gold-dark); text-transform: uppercase; margin-bottom: 10px;
-  display: flex; align-items: center; gap: 8px;
-}
-.presence-header .pulse-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
-  animation: pulse 1.5s ease-in-out infinite;
-}
-@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
-.presence-body { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.presence-body:last-child { margin-bottom: 0; }
-.presence-icon {
-  width: 48px; height: 48px; border-radius: 10px;
-  background: rgba(212,160,38,0.1); border: 1px solid rgba(212,160,38,0.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: var(--gold); flex-shrink: 0; overflow: hidden;
-}
-.presence-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-.presence-info { flex: 1; min-width: 0; }
-.presence-title {
-  font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 600;
-  color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.presence-detail {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-secondary);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.presence-empty {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-secondary);
-  text-align: center; padding: 8px 0; opacity: 0.6;
+/* Credits Tasarımı */
+.credits-box {
+    font-size: 0.95rem;
+    color: #888;
+    margin-top: 15px;
+    transform: translateZ(20px);
 }
 
-/* SOCIAL LINKS */
-.social-links { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
-.social-btn {
-  width: 44px; height: 44px; border-radius: 12px;
-  background: rgba(212,160,38,0.06); border: 1px solid rgba(212,160,38,0.15);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-secondary); font-size: 18px; text-decoration: none;
-  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: none;
-}
-.social-btn:hover {
-  color: var(--gold); background: rgba(212,160,38,0.15); border-color: var(--gold);
-  box-shadow: 0 0 20px rgba(212,160,38,0.25); transform: translateY(-4px);
+.credits-box a {
+    color: #d4af37;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
 }
 
-/* MUSIC PLAYER */
-.player-bar {
-  display: flex; align-items: center; gap: 15px;
-  padding: 12px 18px; border-radius: 14px;
-  background: rgba(0,0,0,0.3); border: 1px solid rgba(212,160,38,0.1);
-}
-.play-btn {
-  width: 42px; height: 42px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold-dark), var(--gold)); border: none;
-  display: flex; align-items: center; justify-content: center;
-  color: #0a0a0f; font-size: 15px; cursor: pointer; transition: all 0.3s; flex-shrink: 0;
-}
-.play-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--gold-glow); }
-.volume-container { display: flex; align-items: center; gap: 10px; flex: 1; }
-.volume-container i { color: var(--gold-dark); font-size: 1.2rem; flex-shrink: 0; }
-.volume-slider {
-  flex: 1; height: 6px; -webkit-appearance: none; appearance: none;
-  border-radius: 3px; background: rgba(212,160,38,0.2); outline: none; cursor: pointer;
-}
-.volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
-  background: var(--gold); cursor: pointer; box-shadow: 0 0 8px var(--gold-glow);
+.credits-box a:hover {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
 }
 
-#scanlines {
-  position: fixed; inset: 0; z-index: 3; pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+        /* --- card design --- */
+        .card {
+            background: rgba(10, 10, 10, 0.6);
+            width: 440px;
+            max-width: 90%;
+            padding: 2.5rem;
+            border-radius: 32px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.1s ease-out;
+            margin: 20px auto;
+            transform-style: preserve-3d;
+            will-change: transform;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.2);
+            /* background kept constant for transparency */
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%),
+                    rgba(255, 255, 255, 0.08) 0%,
+                    transparent 60%);
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* --- profile area --- */
+        .profile-wrapper {
+            position: relative;
+            width: 125px;
+            height: 125px;
+            margin: 0 auto 20px auto;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: translateZ(50px);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            background-color: #0a0a0a;
+        }
+
+        .profile-wrapper:hover {
+            transform: scale(1.1) rotate(5deg) translateZ(80px);
+        }
+
+        .profile-wrapper:hover .profile-img {
+            border-color: #d4af37;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        }
+
+
+        .custom-status {
+            transform: translateZ(30px);
+        }
+
+        .badge {
+            transform: translateZ(35px);
+        }
+
+        .skills-container {
+            transform: translateZ(35px);
+        }
+
+        .activities-wrapper {
+            transform: translateZ(20px);
+        }
+
+
+        .view-counter {
+            transform: translateZ(15px);
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 4px solid #0a0a0a;
+            background-color: #747f8d;
+            z-index: 2;
+        }
+
+        .status-online {
+            background-color: #3ba55c;
+            box-shadow: 0 0 12px #3ba55c;
+        }
+
+        .status-idle {
+            background-color: #faa61a;
+            box-shadow: 0 0 12px #faa61a;
+        }
+
+        .status-dnd {
+            background-color: #ed4245;
+            box-shadow: 0 0 12px #ed4245;
+        }
+
+        /* --- texts --- */
+        h1 {
+            display: inline-block;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #d4af37, #ffffff, #888888, #d4af37);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transform: translateZ(40px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: shine 5s linear infinite;
+            filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.4));
+        }
+
+        h1:hover {
+            transform: translateZ(60px) scale(1.06);
+            animation: shine 5s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 300% center;
+            }
+        }
+
+        .custom-status {
+           display: inline-block;
+           font-style: italic;
+           color: #bbb;
+           font-size: 0.9rem;
+           margin-bottom: 15px;
+           transition: all 0.3s ease;
+           transform: translateZ(30px);
+        }
+
+        .custom-status:hover {
+            color: #eee;
+            transform: translateZ(45px) scale(1.02);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            padding: 6px 16px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: default;
+            /* kenar kalınlığı */
+            box-shadow: 0 4px 0 rgba(212, 175, 55, 0.2);
+            transform: translateZ(35px);
+        }
+
+        .badge:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: #d4af37;
+            transform: translateY(-2px) translateZ(50px);
+            box-shadow: 0 6px 0 rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- silver skill badges --- */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 0 10px;
+            transform-style: preserve-3d;
+        }
+
+        .skill-badge {
+            display: inline-block;
+            background: rgba(192, 192, 192, 0.08);
+            color: #C0C0C0;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid rgba(192, 192, 192, 0.2);
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            /* kenar kalınlığı */
+            box-shadow: 0 3px 0 rgba(192, 192, 192, 0.15);
+            transform: translateZ(20px);
+        }
+
+        .skill-badge:hover {
+            background: rgba(192, 192, 192, 0.15);
+            border-color: #C0C0C0;
+            transform: translateY(-2px) translateZ(35px);
+            color: #fff;
+            box-shadow: 0 5px 0 rgba(192, 192, 192, 0.2);
+        }
+
+        /* --- activities --- */
+        .activities-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .activity-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+            transform: translateZ(25px);
+        }
+
+        .activity-box:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+            transform: scale(1.02) translateZ(40px);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .activity-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 14px;
+            object-fit: cover;
+        }
+
+        .activity-info {
+            text-align: left;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .activity-header {
+            font-size: 0.65rem;
+            color: #d4af37;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .activity-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .activity-details {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* --- fixed bottom card --- */
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: rgba(212, 175, 55, 0.06);
+            padding: 18px;
+            border-radius: 24px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateZ(25px);
+        }
+
+        .social-links:hover {
+            transform: translateY(-5px) translateZ(40px);
+            background: rgba(212, 175, 55, 0.08);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
+        }
+
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.4rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: #d4af37;
+            color: #000;
+            transform: translateY(-5px) translateZ(30px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .social-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* spotify bar */
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            height: 14px;
+            gap: 2px;
+            margin-left: auto;
+        }
+
+        .bar {
+            width: 3px;
+            background-color: #1db954;
+            animation: bounce 1s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                height: 20%;
+            }
+
+            50% {
+                height: 100%;
+            }
+        }
+
+        /* view counter */
+        .view-counter {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #bbb;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .view-counter:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: scale(1.05) translateZ(10px);
+        }
+
+        .view-counter i {
+            animation: eye-pulse 2s infinite;
+        }
+
+        @keyframes eye-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* --- background video --- */
+        #bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    /* BOZAN FİLTRELERİ KALDIRDIK, VİDEO ORİJİNAL CAM GİBİ NET VE PARLAK */
 }
 
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-.fade-in-up { animation: fadeInUp 0.8s ease forwards; }
-.delay-1 { animation-delay: 0.1s; opacity: 0; }
-.delay-2 { animation-delay: 0.2s; opacity: 0; }
-.delay-3 { animation-delay: 0.3s; opacity: 0; }
-.delay-5 { animation-delay: 0.5s; opacity: 0; }
+        /* --- volume control --- */
+        .volume-control {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(20px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
 
-@media (max-width: 480px) {
-  .main-card { width: 92vw; padding: 28px 20px 22px; }
-  .username { font-size: 18px; }
-}
-</style>
+        .volume-control:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateX(-50%) translateZ(30px);
+        }
+
+        .volume-icon {
+            color: #ccc;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            outline: none;
+            cursor: none !important;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: none !important; 
+            transition: all 0.2s;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            background: #d4af37;
+            transform: scale(1.2);
+        }
+        .volume-icon:hover {
+            color: #d4af37;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* --- mobile responsive --- */
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+                background-size: 15px 15px; 
+            }
+
+            .main-wrapper {
+                height: auto;
+                min-height: 100vh;
+                padding: 40px 0;
+                perspective: none; 
+                align-items: flex-start; 
+            }
+
+            .card {
+                width: 85%;
+                margin: 0 auto;
+                transform: none !important; 
+                padding-bottom: 80px; 
+            }
+            .card:hover {
+                 transform: none !important;
+                 box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+            }
+            
+            .view-counter {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 15px;
+                width: max-content;
+            }
+
+            .volume-control {
+                bottom: 60px; 
+                width: 80%;
+                justify-content: center;
+            }
+            
+            input[type=range] {
+                width: 100%;
+            }
+
+            .cursor-dot, .cursor-outline {
+                display: none;
+            }
+
+            #audio-visualizer {
+                display: none !important;
+            }
+            
+            * {
+                cursor: auto !important;
+            }
+        }
+    </style>
 </head>
+
 <body>
-
-<!-- GİRİŞ EKRANI -->
-<div id="loader">
-  <p style="font-weight: bold; letter-spacing: 2px;">[ GİRİŞ İÇİN TIKLAYIN ]</p>
-</div>
-
-<!-- ÖZEL İMLEÇ -->
-<div id="cursor-glow"></div>
-<div id="cursor-dot"></div>
-
-<!-- ARKA PLAN VİDEOSU -->
-<div id="bg-fallback"></div>
-<video id="bg-video" autoplay loop muted playsinline>
-  <source src="bg.mp4" type="video/mp4">
-</video>
-
-<div id="scanlines"></div>
-
-<!-- KAR & İMLEÇ EFEKTI CANVAS -->
-<canvas id="particles-canvas"></canvas>
-
-<!-- UÇTAN UCA EKOLAYZER CANVAS -->
-<canvas id="audio-viz"></canvas>
-
-<!-- MÜZİK -->
-<audio id="bg-music" loop preload="auto">
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<!-- ANA UYGULAMA -->
-<div id="app">
-  <div class="card-wrapper">
-    <div class="main-card" id="main-card">
-
-      <!-- Profil -->
-      <div class="profile-section fade-in-up delay-1">
-        <div class="avatar-container">
-          <div class="avatar-halo"></div>
-          <div class="avatar-halo-inner"></div>
-          <img src="pp.png" alt="Profil Resmi" class="avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23191920%22 width=%22100%22 height=%22100%22/><text x=%2250%25%22 y=%2254%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23d4a026%22 font-size=%2238%22 font-family=%22monospace%22>Y</text></svg>'">
-          <div class="status-dot" id="discord-status" title="Discord Status"></div>
+    <div id="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <h1 style="font-size: 1.2rem; margin:0; animation: none;">LOADING</h1>
         </div>
-
-        <div class="username">Yasir Bakır</div>
-        <div class="bio">Yazılım konusunda kendimi geliştiriyorum. 🚀</div>
-        <div class="badge"><i class="fas fa-code"></i> GELİŞTİRİCİ</div>
-      </div>
-
-      <!-- Teknolojiler -->
-      <div class="tech-tags fade-in-up delay-2">
-        <span class="tech-tag">HTML</span>
-        <span class="tech-tag">PYTHON</span>
-        <span class="tech-tag">C++</span>
-        <span class="tech-tag">C#</span>
-        <span class="tech-tag">NODE.JS</span>
-      </div>
-
-      <!-- Canlı Discord Durumu -->
-      <div class="presence-card fade-in-up delay-3" id="presence-card">
-        <div class="presence-header">
-          <div class="pulse-dot"></div>
-          <span>CANLI AKTİVİTE</span>
-        </div>
-        <div id="presence-content">
-          <div class="presence-empty">Discord'a bağlanılıyor...</div>
-        </div>
-      </div>
-
-      <!-- Sosyal Medya -->
-      <div class="social-links fade-in-up delay-5">
-        <a href="https://github.com/HaciYasir" target="_blank" class="social-btn" title="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="discord://-/users/992152470576955392" target="_blank" class="social-btn" title="Discord">
-          <i class="fab fa-discord"></i>
-        </a>
-      </div>
-
-      <!-- Müzik Çalar Panel -->
-      <div class="player-bar fade-in-up delay-5">
-        <button class="play-btn" id="play-btn">
-          <i class="fas fa-play" id="play-icon"></i>
-        </button>
-        
-        <div class="volume-container">
-          <i class="fas fa-volume-up" id="vol-icon"></i>
-          <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="20">
-        </div>
-      </div>
-
     </div>
-  </div>
+
+    <video id="bg-video" autoplay loop muted playsinline preload="auto">
+        <source src="video.mp4" type="video/mp4">
+    </video>
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <canvas id="snow-canvas"></canvas>
+    <canvas id="audio-visualizer"></canvas>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="main-wrapper">
+        <div class="card">
+        <div class="profile-wrapper">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Profile"
+                class="profile-img" id="avatar">
+            <div class="status-indicator" id="status-dot"></div>
+        </div>
+
+        <h1 id="username">Yasir Bakır</h1>
+        <br>
+        <div id="custom-status" class="custom-status"></div>
+        <br>
+        <!-- YENİ ANİMASYONLU BİO KUTUSU -->
+<div class="bio-box">
+  <span>Yazılım konusunda kendimi geliştiriyorum... </span>
 </div>
 
-<script>
-const CONFIG = { DISCORD_ID: '992152470576955392' };
+<div class="badge">DEVELOPER</div>
 
-
-
-/* 3D TILT & CUSTOM CURSOR */
-const cursorGlow = document.getElementById('cursor-glow');
-const cursorDot = document.getElementById('cursor-dot');
-const card = document.getElementById('main-card');
-let cursorParticles = [];
-
-document.addEventListener('mousemove', e => {
-  if (cursorDot) { cursorDot.style.left = e.clientX + 'px'; cursorDot.style.top = e.clientY + 'px'; }
-  if (cursorGlow) { cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px'; }
-
-  if (card) {
-    const rotateX = ((e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)) * -10;
-    const rotateY = ((e.clientX - window.innerWidth / 2) / (window.innerWidth / 2)) * 10;
-    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  }
-
-  // İMLEÇ PARILTI EFEKTİ (TRAIL)
-  cursorParticles.push({
-    x: e.clientX,
-    y: e.clientY,
-    size: Math.random() * 3 + 1.5,
-    speedX: (Math.random() - 0.5) * 1.2,
-    speedY: (Math.random() - 0.5) * 1.2,
-    opacity: 1
-  });
-});
-
-/* KAR YAĞIŞI & İMLEÇ PARILTI MOTORU */
-const pCanvas = document.getElementById('particles-canvas');
-const pCtx = pCanvas.getContext('2d');
-let snowflakes = [];
-
-function resizePCanvas() {
-  pCanvas.width = window.innerWidth;
-  pCanvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizePCanvas);
-resizePCanvas();
-
-// Snowflakes init
-for (let i = 0; i < 60; i++) {
-  snowflakes.push({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    radius: Math.random() * 2 + 1,
-    speedY: Math.random() * 0.8 + 0.4,
-    speedX: Math.random() * 0.4 - 0.2,
-    opacity: Math.random() * 0.6 + 0.3
-  });
-}
-
-function animateParticles() {
-  pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-
-  // KAR YAĞIŞI ÇİZİMİ
-  snowflakes.forEach(flake => {
-    pCtx.beginPath();
-    pCtx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-    pCtx.fillStyle = `rgba(240, 224, 180, ${flake.opacity})`;
-    pCtx.fill();
-
-    flake.y += flake.speedY;
-    flake.x += flake.speedX;
-
-    if (flake.y > pCanvas.height) {
-      flake.y = -5;
-      flake.x = Math.random() * pCanvas.width;
-    }
-  });
-
-  // İMLEÇ EFEKTİ ÇİZİMİ
-  for (let i = 0; i < cursorParticles.length; i++) {
-    let p = cursorParticles[i];
-    pCtx.beginPath();
-    pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    pCtx.fillStyle = `rgba(212, 160, 38, ${p.opacity})`;
-    pCtx.fill();
-
-    p.x += p.speedX;
-    p.y += p.speedY;
-    p.size *= 0.94;
-    p.opacity -= 0.03;
-
-    if (p.opacity <= 0 || p.size <= 0.2) {
-      cursorParticles.splice(i, 1);
-      i--;
-    }
-  }
-
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-/* SES & EKRAN EN ALTI EKOLAYZER */
-const audio = document.getElementById('bg-music');
-const loader = document.getElementById('loader');
-const playBtn = document.getElementById('play-btn');
-const playIcon = document.getElementById('play-icon');
-const volSlider = document.getElementById('volume-slider');
-
-let audioCtx, analyser, dataArray;
-let isPlaying = false;
-
-if (audio) audio.volume = 0.2;
-
-if (loader) {
-  loader.addEventListener('click', () => {
-    if (audio) {
-      audio.play().then(() => {
-        isPlaying = true;
-        if (playIcon) playIcon.className = 'fas fa-pause';
-        startVisualizer();
-      }).catch(err => console.log("Ses başlatma hatası:", err));
-    }
-    loader.style.opacity = '0';
-    setTimeout(() => loader.style.display = 'none', 500);
-  });
-}
-
-if (playBtn && audio) {
-  playBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (isPlaying) {
-      audio.pause();
-      if (playIcon) playIcon.className = 'fas fa-play';
-    } else {
-      audio.play();
-      if (playIcon) playIcon.className = 'fas fa-pause';
-    }
-    isPlaying = !isPlaying;
-  });
-}
-
-if (volSlider && audio) {
-  volSlider.addEventListener('input', e => { audio.volume = e.target.value / 100; });
-}
-
-function startVisualizer() {
-  if (audioCtx) return;
-  try {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 128;
-    const source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-    drawVisualizer();
-  } catch (e) {
-    console.log("Visualizer hatası:", e);
-  }
-}
-
-function drawVisualizer() {
-  requestAnimationFrame(drawVisualizer);
-  if (!analyser) return;
-  analyser.getByteFrequencyData(dataArray);
-
-  const canvas = document.getElementById('audio-viz');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  if (canvas.width !== window.innerWidth || canvas.height !== canvas.offsetHeight) {
-    canvas.width = window.innerWidth;
-    canvas.height = canvas.offsetHeight || 110;
-  }
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const bars = 50;
-  const gap = 4;
-  const barWidth = (canvas.width - ((bars - 1) * gap)) / bars;
-
-  for (let i = 0; i < bars; i++) {
-    const barHeight = (dataArray[i] / 255) * canvas.height;
-    const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
-    gradient.addColorStop(0, '#f0d060');
-    gradient.addColorStop(1, '#d4a026');
-
-    ctx.fillStyle = gradient;
-    const xPosition = i * (barWidth + gap);
-    ctx.fillRect(xPosition, canvas.height - barHeight, barWidth, Math.max(barHeight, 3));
-  }
-}
-
-/* LANYARD DISCORD DURUMU (GELİŞMİŞ LOGO ÇÖZÜCÜ) */
-const statusDot = document.getElementById('discord-status');
-const presenceContent = document.getElementById('presence-content');
-
-function connectLanyard() {
-  const ws = new WebSocket('wss://api.lanyard.rest/socket');
-
-  ws.onopen = () => {
-    ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: CONFIG.DISCORD_ID } }));
-  };
-
-  ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') {
-      const presence = data.d;
-      if (statusDot) statusDot.className = `status-dot ${presence.discord_status || 'offline'}`;
-      updatePresenceUI(presence);
-    }
-  };
-
-  ws.onclose = () => setTimeout(connectLanyard, 5000);
-}
-
-// Popüler oyunlar için yedek kapak görselleri listesi 🖼️
-const GAME_COVERS = {
-  'euro truck simulator 2': 'https://cdn.cloudflare.steamstatic.com/steam/apps/227300/header.jpg',
-  'ets2': 'https://cdn.cloudflare.steamstatic.com/steam/apps/227300/header.jpg',
-  'counter-strike 2': 'https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg',
-  'cs2': 'https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg',
-  'grand theft auto v': 'https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg',
-  'gta v': 'https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg',
-  'valorant': 'https://images.contentstack.io/v3/assets/bltb65488c70f7f02b0/blt2b1c4161f3640203/631b9e59997455110d732c58/Valorant_2022_E5A2_PlayVALORANT_ContentStackThumbnail_1200x675.jpg',
-  'minecraft': 'https://assets.xboxservices.com/assets/77/f7/77f72eb3-41a4-44a8-9d29-cb68bcf82c81.jpg?n=Minecraft_GLP-Page-Hero-0_1083x609.jpg',
-  'league of legends': 'https://cmsassets.rgpub.io/sanity/images/ds13aw3g/43_live/22813589dd97b5e8c1875e53303cb50198f1f705-1920x1080.jpg'
-};
-
-function updatePresenceUI(p) {
-  if (!presenceContent) return;
-  if (!p || (!p.activities.length && !p.spotify)) {
-    presenceContent.innerHTML = `<div class="presence-empty">Şu an aktif bir etkinlik yok</div>`;
-    return;
-  }
-
-  let html = '';
-
-  // 1. Spotify varsa ekle 🎵
-  if (p.spotify) {
-    html += `
-      <div class="presence-body">
-        <div class="presence-icon">
-          <img src="${p.spotify.album_art_url}" alt="Album Art" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'fab fa-spotify\'></i>';">
+        <div class="skills-container">
+            <span class="skill-badge">HTML</span>
+            <span class="skill-badge">PYTHON</span>
+            <span class="skill-badge">C++</span>
+            <span class="skill-badge">C#</span>
         </div>
-        <div class="presence-info">
-          <div class="presence-title">${p.spotify.song}</div>
-          <div class="presence-detail">${p.spotify.artist}</div>
+        <!-- CREDITS ALANI -->
+<div class="credits-box">
+  Original Code by <a href="https://github.com/SYS-0xA7" target="_blank">SYS_0xA7</a> 👑
+</div>
+
+        <div class="activities-wrapper" id="activities-wrapper">
         </div>
-      </div>`;
-  }
-
-  // 2. Oyunlar ve Etkinlikler 🎮
-  if (p.activities && p.activities.length > 0) {
-    p.activities.forEach(act => {
-      if (act.type !== 4 && act.name.toLowerCase() !== 'spotify') {
-        let iconHtml = '<i class="fas fa-gamepad"></i>';
-        let imgUrl = '';
-        const nameLower = act.name.toLowerCase();
-
-        // A) Önce Discord/Lanyard'dan resim geliyor mu kontrol et
-        if (act.assets) {
-          let rawImg = act.assets.large_image || act.assets.small_image;
-          if (rawImg) {
-            if (rawImg.startsWith('spotify:')) {
-              imgUrl = `https://i.scdn.co/image/${rawImg.replace('spotify:', '')}`;
-            } else if (rawImg.startsWith('mp:external/')) {
-              imgUrl = `https://media.discordapp.net/${rawImg.replace('mp:', '')}`;
-            } else if (rawImg.startsWith('mp:')) {
-              imgUrl = `https://media.discordapp.net/external/${rawImg.replace('mp:', '')}`;
-            } else if (rawImg.startsWith('http')) {
-              imgUrl = rawImg;
-            } else if (act.application_id) {
-              imgUrl = `https://cdn.discordapp.com/app-assets/${act.application_id}/${rawImg}.png`;
-            }
-          }
-        }
-
-        // B) Veri gelmediyse Yedek Oyun Kapağı Listemizden çek! 🎯
-        if (!imgUrl) {
-          for (let gameKey in GAME_COVERS) {
-            if (nameLower.includes(gameKey)) {
-              imgUrl = GAME_COVERS[gameKey];
-              break;
-            }
-          }
-        }
-
-        if (imgUrl) {
-          iconHtml = `<img src="${imgUrl}" alt="Activity" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'fas fa-gamepad\'></i>';">`;
-        }
-
-        let subText = act.details || act.state || 'Oynuyor';
-        html += `
-          <div class="presence-body">
-            <div class="presence-icon">${iconHtml}</div>
-            <div class="presence-info">
-              <div class="presence-title">${act.name}</div>
-              <div class="presence-detail">${subText}</div>
-            </div>
-          </div>`;
-      }
-    });
-  }
-
-  presenceContent.innerHTML = html || `<div class="presence-empty">Şu an aktif bir etkinlik yok</div>`;
+        <div class="social-links">
+            <a href="https://github.com/HaciYasir" target="_blank" class="social-btn" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://discord.com/users/992152470576955392" target="_blank" class="social-btn" title="Discord">
+                <i class="fab fa-discord"></i>
+            </a>
+                    <path fill="currentColor"
+                        d="M22.957 7.21c-.004-3.064-2.391-5.576-5.191-6.482c-3.478-1.125-8.064-.962-11.384.604C2.357 3.231 1.093 7.391 1.046 11.54c-.039 3.411.302 12.396 5.369 12.46c3.765.047 4.326-4.804 6.068-7.141c1.24-1.662 2.836-2.132 4.801-2.618c3.376-.836 5.678-3.501 5.673-7.031">
+                    </path>
+                </svg>
+            </a>
+            
+        
+        </div>
+        <br>
+        <br>
+        
+        
+        <!-- Volume Control -->
+        <div class="volume-control">
+            <i class="fas fa-volume-mute volume-icon" id="vol-icon"></i>
+            <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0">
+        </div>
+        </div>
+    </div>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Yasir Bakır",
+  "alternateName": "Yasir Bakır Developer",
+  "url": "https://sys0xa7.is-a.dev/",
+  "image": "https://sys0xa7.is-a.dev/sys_logo.png?v=2",
+  "jobTitle": "Full Stack Developer",
+  "description": "Specialized in building high-quality digital experiences and software systems.",
+  "sameAs": [
+    "https://github.com/WolfGames156",
+    "https://discord.com/users/1463597892462972969",
+    "https://www.patreon.com/cw/SYS_0xA7"
+  ],
+  "knowsAbout": ["HTML", "CSS", "React", "JavaScript", "Node.js", "Python", "C++", "C#"]
 }
-
-connectLanyard();
 </script>
+
+
+    <script>
+        const DISCORD_ID = "992152470576955392";
+
+        // --- music & volume logic ---
+        const audio = document.getElementById('bg-music');
+        const slider = document.getElementById('vol-slider');
+        const icon = document.getElementById('vol-icon');
+        const STORAGE_VOL = 'sys_volume';
+        const STORAGE_TIME = 'sys_audio_time';
+
+        // initialize state
+        const savedVol = localStorage.getItem(STORAGE_VOL);
+        // const savedTime = localStorage.getItem(STORAGE_TIME);
+        let lastVol = 0.5; // default fallback
+
+        if (savedVol !== null) {
+            audio.volume = parseFloat(savedVol);
+            slider.value = savedVol;
+            if (audio.volume > 0) lastVol = audio.volume;
+        } else {
+    audio.volume = 0.3;
+    slider.value = 0.3;
+    lastVol = 0.3;
+}
+        updateIcon(audio.volume);
+
+       // if (savedTime) {
+         //   audio.currentTime = parseFloat(savedTime);
+     //   }
+
+        // toggle mute logic
+        icon.addEventListener('click', () => {
+            if (audio.volume > 0) {
+                lastVol = audio.volume;
+                audio.volume = 0;
+                slider.value = 0;
+            } else {
+                audio.volume = lastVol;
+                slider.value = lastVol;
+                if (audio.paused) audio.play();
+            }
+            localStorage.setItem(STORAGE_VOL, audio.volume);
+            updateIcon(audio.volume);
+        });
+
+        // event listeners
+        slider.addEventListener('input', (e) => {
+            const vol = parseFloat(e.target.value);
+            audio.volume = vol;
+            if (vol > 0) lastVol = vol;
+            localStorage.setItem(STORAGE_VOL, vol);
+            updateIcon(vol);
+            
+            if (vol > 0 && audio.paused) {
+                audio.play();
+            }
+        });
+
+        // save position periodically
+       // setInterval(() => {
+  //          if (!audio.paused) {
+  //              localStorage.setItem(STORAGE_TIME, audio.currentTime);
+  //          }
+    //    }, 1000);
+
+        function updateIcon(vol) {
+            icon.className = 'fas volume-icon ' + (vol === 0 ? 'fa-volume-mute' : (vol < 0.5 ? 'fa-volume-down' : 'fa-volume-up'));
+        }
+
+        // snow script
+        const canvas = document.getElementById('snow-canvas');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+
+        const flakes = Array.from({ length: 120 }).map(() => ({
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            s: Math.random() * 3 + 2, sp: Math.random() * 0.7 + 0.3
+        }));
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255,255,255,0.7)";
+            flakes.forEach(f => {
+                f.y += f.sp; if (f.y > canvas.height) f.y = -5;
+                ctx.beginPath(); ctx.arc(f.x, f.y, f.s, 0, Math.PI * 2); ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        // 1. öncelik: avatarı hemen yükle
+        async function fetchAvatarDirectly() {
+            try {
+                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+                const data = await response.json();
+                if (data.success) {
+                    const user = data.data.discord_user;
+                    const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=512`;
+                    document.getElementById('avatar').src = avatarUrl;
+                }
+            } catch (error) {
+                console.error("Avatar yüklenemedi:", error);
+            }
+        }
+        fetchAvatarDirectly();
+
+        // 2. socket: durum güncellemeleri için
+        async function fetchLanyard() {
+            const ws = new WebSocket('wss://api.lanyard.rest/socket');
+            ws.onopen = () => ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: DISCORD_ID } }));
+            ws.onmessage = (e) => {
+                const { t, d } = JSON.parse(e.data);
+                if (t === 'INIT_STATE' || t === 'PRESENCE_UPDATE') update(d);
+            };
+        }
+
+        function update(data) {
+            const user = data.discord_user;
+            const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=512`;
+            const currentSrc = document.getElementById('avatar').src;
+            if (!currentSrc.includes(user.avatar)) {
+                document.getElementById('avatar').src = avatarUrl;
+            }
+
+            document.getElementById('status-dot').className = 'status-indicator status-' + data.discord_status;
+
+            const customStatus = data.activities.find(a => a.type === 4);
+            if (customStatus && customStatus.state) {
+                let statusHtml = customStatus.emoji ? `${customStatus.emoji.id ? `<img src="https://cdn.discordapp.com/emojis/${customStatus.emoji.id}.png?v=1" style="width:16px;height:16px;vertical-align:middle;margin-right:5px;">` : customStatus.emoji.name + ' '}` : '';
+                statusHtml += customStatus.state;
+                document.getElementById('custom-status').innerHTML = statusHtml;
+            } else {
+                document.getElementById('custom-status').innerHTML = '';
+            }
+
+            let html = "";
+            if (data.listening_to_spotify) {
+                const s = data.spotify;
+                html += `<div class="activity-box"><img src="${s.album_art_url}" class="activity-img"><div class="activity-info"><div class="activity-header">Listening to Spotify</div><div class="activity-name">${s.song}</div><div class="activity-details">${s.artist}</div></div><div class="bars"><div class="bar"></div><div class="bar" style="animation-delay:.1s"></div><div class="bar" style="animation-delay:.2s"></div></div></div>`;
+            }
+            data.activities.filter(a => a.type !== 4 && a.id !== 'spotify:1').forEach(act => {
+                let img = act.assets ? (act.assets.large_image.startsWith("mp:external") ? act.assets.large_image.replace(/mp:external\/.*\/https\/(.*)/, 'https://$1') : `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`) : "https://cdn.discordapp.com/embed/avatars/0.png";
+                html += `<div class="activity-box"><img src="${img}" class="activity-img"><div class="activity-info"><div class="activity-header">Playing Now</div><div class="activity-name">${act.name}</div><div class="activity-details">${act.state || ''}</div></div></div>`;
+            });
+            document.getElementById('activities-wrapper').innerHTML = html || `<div class="activity-box" style="justify-content:center; opacity:0.3">Inactive</div>`;
+        }
+        fetchLanyard();
+
+        async function initCounter() {
+            const countEl = document.getElementById('view-count');
+            try {
+                const res = await fetch('https://firebasedevapi.vercel.app/api/increment', { method: 'POST' });
+                const data = await res.json();
+                countEl.innerText = data.count ?? 'N/A';
+            } catch (e) {
+                console.error("Counter Error:", e);
+                countEl.innerText = "N/A";
+            }
+        }
+        initCounter();
+
+        // custom cursor logic
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+        let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0, outlineX = 0, outlineY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            dotX += (mouseX - dotX) * 0.2;
+            dotY += (mouseY - dotY) * 0.2;
+            dot.style.left = dotX + 'px';
+            dot.style.top = dotY + 'px';
+            outlineX += (mouseX - outlineX) * 0.1;
+            outlineY += (mouseY - outlineY) * 0.1;
+            outline.style.left = outlineX + 'px';
+            outline.style.top = outlineY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // hover effect
+        const interactiveElements = document.querySelectorAll('a, button, .social-btn, .view-counter, .profile-wrapper, .activity-box, .skill-badge, .badge, h1, input[type=range], .volume-icon');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // 3d tilt effect logic
+        const card = document.querySelector('.card');
+        let cardRotateX = 0, cardRotateY = 0, isMouseOut = false;
+
+        document.addEventListener('mouseleave', () => isMouseOut = true);
+        document.addEventListener('mouseenter', () => isMouseOut = false);
+
+        function updateCardTilt() {
+            if (window.innerWidth <= 768) return;
+
+            const limit = 15;
+            let targetX = 0, targetY = 0;
+
+            if (!isMouseOut) {
+                targetX = (mouseY - window.innerHeight / 2) / (window.innerHeight / 2) * -limit;
+                targetY = (mouseX - window.innerWidth / 2) / (window.innerWidth / 2) * limit;
+
+                const cardRect = card.getBoundingClientRect();
+                const gx = ((mouseX - cardRect.left) / cardRect.width) * 100;
+                const gy = ((mouseY - cardRect.top) / cardRect.height) * 100;
+                card.style.setProperty('--glare-x', `${gx}%`);
+                card.style.setProperty('--glare-y', `${gy}%`);
+            }
+
+            cardRotateX += (targetX - cardRotateX) * 0.1;
+            cardRotateY += (targetY - cardRotateY) * 0.1;
+            card.style.transform = `perspective(1000px) rotateX(${cardRotateX}deg) rotateY(${cardRotateY}deg)`;
+            requestAnimationFrame(updateCardTilt);
+        }
+        updateCardTilt();
+
+        // click to enter logic
+
+        // --- Audio Visualizer ---
+        let audioContext, analyser, source;
+        const vCanvas = document.getElementById('audio-visualizer');
+        const vCtx = vCanvas.getContext('2d');
+
+        function resizeVisualizer() {
+            vCanvas.width = vCanvas.offsetWidth;
+            vCanvas.height = vCanvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeVisualizer);
+
+        function initVisualizer() {
+            resizeVisualizer();
+            if(audioContext) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioContext();
+                analyser = audioContext.createAnalyser();
+                analyser.smoothingTimeConstant = 0.92; // smoother
+
+                source = audioContext.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+
+                analyser.fftSize = 64; // significantly fewer bars for performance
+                visualize();
+            } catch(e) {
+                console.error("Visualizer init failed:", e);
+            }
+        }
+
+        function visualize() {
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            const draw = () => {
+                requestAnimationFrame(draw);
+                
+                if(!analyser) return;
+                analyser.getByteFrequencyData(dataArray);
+
+                vCtx.clearRect(0, 0, vCanvas.width, vCanvas.height);
+
+                // Symmetrical: Edges to Center
+                // We map frequencies 0..N to Outer..Center
+                const halfWidth = vCanvas.width / 2;
+                // utilize only lower half of frequencies for better visual? 
+                // typically high freqs are empty. Let's use roughly 70% of bin count to stretch useful data.
+                const usefulBins = Math.floor(bufferLength * 0.7); 
+                const barWidth = (halfWidth / usefulBins);
+                
+                let barHeight;
+
+                for (let i = 0; i < usefulBins; i++) {
+                    // scale height slightly down if it's too aggressive
+                    barHeight = dataArray[i] * 0.8; 
+
+                    const scaledHeight = (barHeight / 255) * vCanvas.height;
+
+                    const gradient = vCtx.createLinearGradient(0, vCanvas.height - scaledHeight, 0, vCanvas.height);
+                    gradient.addColorStop(0, '#d4af37');
+                    gradient.addColorStop(1, 'rgba(212, 175, 55, 0)');
+
+                    vCtx.fillStyle = gradient;
+
+                    // Left Side: 0 at x=0
+                    const xLeft = i * barWidth;
+                    // Right Side: 0 at x=width
+                    const xRight = vCanvas.width - ((i + 1) * barWidth);
+
+                    vCtx.fillRect(xLeft, vCanvas.height - scaledHeight, barWidth - 1, scaledHeight);
+                    vCtx.fillRect(xRight, vCanvas.height - scaledHeight, barWidth - 1, scaledHeight);
+                }
+            };
+            draw();
+        }
+
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const loaderContent = document.querySelector('.loader-content');
+            
+            // initial loading done, show enter text
+            loaderContent.innerHTML = '<h1 class="click-text">CLICK TO ENTER</h1>';
+            loader.style.cursor = 'none'; // hide system cursor here too
+
+            // wait for user interaction
+            loader.addEventListener('click', () => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                
+                // play media
+                const vid = document.getElementById('bg-video');
+                if(vid.paused) vid.play().catch(()=>{});
+
+                // init visualizer
+                if (!audioContext) initVisualizer();
+                if (audioContext && audioContext.state === 'suspended') audioContext.resume();
+
+                // play audio if volume is allowed
+                if (audio.volume > 0) {
+                    audio.play().catch(e => console.log("Audio play error", e));
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
+
+
+
