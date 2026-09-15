@@ -803,11 +803,6 @@
             <span class="skill-badge">C++</span>
             <span class="skill-badge">C#</span>
         </div>
-        <!-- CREDITS ALANI -->
-<div class="credits-box">
-  Original Code by <a href="https://github.com/SYS-0xA7" target="_blank">SYS_0xA7</a> 👑
-</div>
-
         <div class="activities-wrapper" id="activities-wrapper">
         </div>
         <div class="social-links">
@@ -1042,8 +1037,7 @@
         animateCursor();
 
         // hover effect
-        const interactiveElements = document.querySelectorAll('a, button, .social-btn, .view-counter, .profile-wrapper, .activity-box, .skill-badge, .badge, h1, input[type=range], .volume-icon');
-        interactiveElements.forEach(el => {
+const interactiveElements = document.querySelectorAll('a, button, .social-btn, .view-counter, .profile-wrapper, .activity-box, .skill-badge, .badge, .bio-box, h1, input[type=range], .volume-icon');        interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
         });
