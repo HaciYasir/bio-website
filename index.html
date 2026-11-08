@@ -484,6 +484,7 @@
             margin-top: 30px;
             display: flex;
             justify-content: center;
+            flex-wrap: wrap; /* Mobilde taşmayı önlemek için eklendi */
             gap: 15px;
             background: rgba(212, 175, 55, 0.06);
             padding: 18px;
@@ -716,6 +717,12 @@
                 <a href="https://discord.com/users/992152470576955392" target="_blank" class="social-btn" title="Discord">
                     <i class="fab fa-discord"></i>
                 </a>
+                <a href="https://steamcommunity.com/id/haciyasirbakir/" target="_blank" class="social-btn" title="Steam">
+                    <i class="fab fa-steam"></i>
+                </a>
+                <a href="https://open.spotify.com/user/316jkxtwjxakimirvibdskukpnzi?si=f8105c955b0f48a5" target="_blank" class="social-btn" title="Spotify">
+                    <i class="fab fa-spotify"></i>
+                </a>
             </div>
 
             <br><br>
@@ -927,12 +934,11 @@
 
             document.getElementById('activities-wrapper').innerHTML = html || `<div class="activity-box" style="justify-content:center; opacity:0.4; font-size:0.85rem;"><i class="fas fa-moon" style="margin-right:6px;"></i> Şu anda herhangi bir aktivite yok</div>`;
             
-            // Dinamik gelen yeni elementlere de imleç (cursor-hover) eventlerini bağla
             bindInteractiveHover();
         }
         fetchLanyard();
 
-        // --- Canlı Sayaç (Her saniye süreyi artırır) ---
+        // --- Canlı Sayaç ---
         setInterval(() => {
             const timers = document.querySelectorAll('.live-timer');
             timers.forEach(timer => {
